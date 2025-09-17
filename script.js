@@ -22,6 +22,7 @@ let displayValue = '0';
 let lastResult = null;
 
 const display = document.getElementById('display');
+const dotBtn = document.querySelector('[data-dot]');
 
 function updateDisplay(value = displayValue) {
   display.textContent = value;
@@ -30,6 +31,7 @@ function updateDisplay(value = displayValue) {
 function clearAll() {
   first = null; operator = null; second = null; lastResult = null; displayValue = '0';
   updateDisplay();
+  syncDotDisabled();
 }
 
 function inputDigit(d) {
@@ -42,13 +44,23 @@ function inputDigit(d) {
     second = parseFloat(displayValue);
   }
   updateDisplay();
+  syncDotDisabled();
 }
 
 function inputDot() {
+  // If starting a new second operand, begin with 0.
+  if (operator && second === null) {
+    displayValue = '0.';
+    second = parseFloat(displayValue);
+    updateDisplay();
+    syncDotDisabled();
+    return;
+  }
   if (!displayValue.includes('.')) {
-    displayValue += displayValue === '' ? '0.' : '.';
+    displayValue += '.';
     if (operator) second = parseFloat(displayValue);
     updateDisplay();
+    syncDotDisabled();
   }
 }
 
@@ -65,6 +77,8 @@ function chooseOperator(op) {
   operator = op;
   // mark that next digit starts new second operand
   second = null;
+  // Enable dot for new operand entry regardless of current display's dot
+  syncDotDisabled();
 }
 
 function equals() {
@@ -88,6 +102,7 @@ function backspace() {
     first = parseFloat(displayValue);
   }
   updateDisplay();
+  syncDotDisabled();
 }
 
 function formatResult(val) {
@@ -128,3 +143,13 @@ window.addEventListener('keydown', (e) => {
 });
 
 clearAll();
+
+function syncDotDisabled() {
+  if (!dotBtn) return;
+  // If starting a new operand (operator chosen, awaiting second), allow dot
+  if (operator && second === null) {
+    dotBtn.disabled = false;
+    return;
+  }
+  dotBtn.disabled = String(displayValue).includes('.');
+}
