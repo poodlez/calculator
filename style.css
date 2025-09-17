@@ -1,0 +1,12 @@
+* { box-sizing: border-box; }
+:root { --bg:#0b1220; --ink:#e5e7eb; --muted:#9aa3b2; --panel:#111827; --accent:#3b82f6; }
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink); display:grid; place-items:center; min-height:100vh; }
+#calculator { background: var(--panel); padding: 16px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.35); width: 320px; }
+#display { background:#0f172a; padding: 16px; border-radius: 8px; font-size: 32px; text-align: right; min-height: 56px; overflow: hidden; word-break: break-all; }
+.keys { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 56px; gap: 10px; margin-top: 12px; }
+.btn { border: 0; border-radius: 10px; font-size: 18px; color: var(--ink); background:#1f2937; cursor: pointer; }
+.btn:hover { filter: brightness(1.1); }
+.btn-operator { background: #243143; }
+.btn-equals { background: var(--accent); color: white; }
+.btn-action { background: #374151; }
+.span-2 { grid-column: span 2; }
